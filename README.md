@@ -4,12 +4,13 @@ Projeto full stack para monitoramento climático com separação clara entre fro
 
 ## 📋 Índice
 
-- [Stack Tecnológica](#-stack-tecnológica)
+- [Stack Tecnológica](#-stack-tecnologica)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Inicialização](#-inicialização)
-- [Execução](#-execução)
+- [Inicialização](#-inicializacao)
+- [Execução](#-execucao)
 - [Testes](#-testes)
-- [Scripts Disponíveis](#-scripts-disponíveis)
+- [Scripts Disponíveis](#-scripts-disponiveis)
+- [Endpoints da API](#-endpoints-da-api)
 
 ## 🛠 Stack Tecnológica
 
@@ -73,11 +74,14 @@ painel-do-clima/
 4. **Configurar variáveis de ambiente (opcional)**
    
    Crie arquivos `.env` nas pastas respectivas, se necessário:
-   ```bash
-   # frontend/.env.local (não versionado)
-   VITE_API_URL=http://localhost:3000
    
-   # backend/.env
+   Frontend (`frontend/.env.local`):
+   ```env
+   VITE_API_URL=http://localhost:3000
+   ```
+   
+   Backend (`backend/.env`):
+   ```env
    PORT=3000
    ```
 
@@ -205,4 +209,3 @@ npm run test:watch
 - Arquivos de teste seguem a convenção `*.test.{js,jsx}` ou `*.spec.{js,jsx}`
 - Use `.env.local` para variáveis de ambiente locais (não versionado no Git)
 - Execute os testes antes de fazer commits para garantir que nada quebrou
-| GET | `/health` | Health check do serviço |
