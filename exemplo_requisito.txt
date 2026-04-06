@@ -1,0 +1,110 @@
+Painel de Monitoramento de Clima
+=================================
+
+A ideia principal é ter um painel full stack — React no frontend e Node.js no backend — que consuma a API do Open-Meteo pra mostrar informações climáticas de qualquer cidade. Uma coisa importante que quero garantir desde o início: o frontend nunca vai bater direto na API externa. Tudo passa pelo backend, sem exceção.
+
+---
+
+O que o painel precisa mostrar
+--------------------------------
+
+Clima atual da cidade:
+- Temperatura
+- Umidade
+- Vento
+- Índice UV
+- Precipitação
+
+Previsão por hora:
+- Temperatura
+- Precipitação
+
+Previsão dos próximos 7 dias:
+- Temperatura mínima e máxima
+- Precipitação
+
+---
+
+Como vai funcionar (fluxo básico)
+------------------------------------
+
+1. Usuário digita o nome da cidade no frontend
+2. Frontend chama o backend
+3. Backend converte a cidade em coordenadas (via API de geocoding)
+4. Com as coordenadas em mãos, o backend busca os dados de clima
+5. Retorna tudo pro frontend
+
+Simples assim. O frontend não toca na API do Open-Meteo em nenhum momento.
+
+---
+
+APIs externas que vou usar
+----------------------------
+
+Geocoding (cidade → lat/lon):
+  https://geocoding-api.open-meteo.com/v1/search
+
+Clima:
+  https://api.open-meteo.com/v1/forecast
+
+O payload que o backend retorna pode seguir o mesmo formato da API do Open-Meteo, sem precisar remodelar tudo.
+
+---
+
+Endpoint do backend
+---------------------
+
+GET /api/weather?city=<cidade>
+
+Respostas esperadas:
+- 200 → tudo certo, dados retornados
+- 400 → parâmetros inválidos
+- 404 → cidade não encontrada
+
+O ponto de entrada da aplicação vai ser o "/" do frontend — ou seja, quando o usuário abrir o sistema, já cai direto no painel, sem nenhuma tela intermediária.
+
+---
+
+Estrutura dos projetos
+------------------------
+
+./frontend  → aplicação React
+./backend   → servidor Node.js
+
+---
+
+Interface (parte que mais me importa visualmente)
+--------------------------------------------------
+
+Quero que fique bonito e funcional. Algumas coisas que já tenho em mente:
+
+- Layout responsivo, pensando mobile primeiro
+- Cards com ícones animados representando o clima
+- Gráfico interativo pra previsão por hora
+- Skeleton loading enquanto os dados ainda estão carregando
+- Cores dinâmicas conforme o clima (azul pra céu limpo, cinza pra nublado, etc.)
+- Barra visual do índice UV com gradiente de verde a vermelho
+- Cards dos 7 dias com barrinhas visuais de mín/máx
+- Campo de busca de cidade (sem autocomplete por enquanto)
+- Botão pra usar a geolocalização do próprio usuário
+- Feedback visual de loading durante a busca
+- Mensagem amigável quando a cidade não for encontrada
+- Tratamento de erro com opção de tentar de novo
+
+---
+
+Como validar depois que tiver pronto
+---------------------------------------
+
+Vou testar com curl:
+- Primeiro bater direto nas APIs do Open-Meteo pra confirmar os retornos
+- Depois testar o endpoint do backend
+
+---
+
+O que NÃO faz parte do escopo
+--------------------------------
+
+- Tema claro/escuro → não vai ter
+- Comentários no código → não quero
+- Frontend consumindo a API diretamente → jamais
