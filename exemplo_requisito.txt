@@ -90,6 +90,7 @@ Quero que fique bonito e funcional. Algumas coisas que já tenho em mente:
 - Feedback visual de loading durante a busca
 - Mensagem amigável quando a cidade não for encontrada
 - Tratamento de erro com opção de tentar de novo
+- Utilize o design system do arquivo DESIGN.md
 
 ---
 

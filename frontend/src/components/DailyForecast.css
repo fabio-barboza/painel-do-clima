@@ -1,0 +1,110 @@
+.daily-forecast {
+  margin-top: var(--spacing-xl);
+}
+
+.daily-forecast__title {
+  margin-bottom: var(--spacing-lg);
+}
+
+.daily-forecast__cards {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  padding-bottom: var(--spacing-sm);
+}
+
+.daily-forecast__card {
+  flex: 0 0 auto;
+  min-width: 140px;
+  background: var(--color-white);
+  border: 1px solid var(--color-parchment);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.daily-forecast__day {
+  font-size: 14px;
+  font-weight: var(--weight-bold);
+  line-height: 1.20;
+  color: var(--color-charcoal);
+  text-transform: capitalize;
+}
+
+.daily-forecast__icon {
+  width: 40px;
+  height: 40px;
+}
+
+.daily-forecast__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.daily-forecast__temp-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  width: 100%;
+}
+
+.daily-forecast__temp-min {
+  font-size: 14px;
+  font-weight: var(--weight-body);
+  color: var(--color-charcoal);
+  min-width: 28px;
+  text-align: right;
+}
+
+.daily-forecast__temp-max {
+  font-size: 14px;
+  font-weight: var(--weight-body);
+  color: var(--color-charcoal);
+  min-width: 28px;
+}
+
+.daily-forecast__bar-track {
+  flex: 1;
+  height: 6px;
+  background: var(--color-parchment);
+  border-radius: 3px;
+  position: relative;
+}
+
+.daily-forecast__bar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--color-lavender), #e8b4f8);
+}
+
+.daily-forecast__precipitation {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: var(--weight-body);
+  color: var(--color-charcoal);
+}
+
+@media (min-width: 768px) {
+  .daily-forecast__cards {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    overflow-x: visible;
+  }
+
+  .daily-forecast__card {
+    min-width: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .daily-forecast__cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

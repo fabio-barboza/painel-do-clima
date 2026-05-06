@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "skills": {
+    "do-create-prd": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-create-prd/SKILL.md",
+      "computedHash": "ef8eca2bb26ad8c1797581d0ec5c92c7a4ccb3bffd6ef17da6e56d9548768221"
+    },
+    "do-create-tasks": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-create-tasks/SKILL.md",
+      "computedHash": "28fdebc8ce9bdc73ede062786154016752ead4647a30b31e8cf5146ace5659d2"
+    },
+    "do-create-techspec": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-create-techspec/SKILL.md",
+      "computedHash": "ad68255c319ff1b2868b5d347d02bdb24f84406aa079e9b9a3383d904a1efed7"
+    },
+    "do-execute-qa": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-qa/SKILL.md",
+      "computedHash": "cd0aa8fade0af0a4dd6271b0d6f0c5f2a94dcfc0cd0efa804a841343c1546724"
+    },
+    "do-execute-qa-bugfix": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-qa-bugfix/SKILL.md",
+      "computedHash": "2cb0a0e337d6d84add9b6360717c64d1fe54600a13ccb372f8023b008d26f35c"
+    },
+    "do-execute-review": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-review/SKILL.md",
+      "computedHash": "67267df25cc4948e512f96c47c1f39808f3cd674eaa93e1c3672e7572b38c795"
+    },
+    "do-execute-review-fix": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-review-fix/SKILL.md",
+      "computedHash": "11dc735f6257c3441525b223824d3febca9dec8302434c2f9cbd32b3dd6abc5d"
+    },
+    "do-execute-task": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-task/SKILL.md",
+      "computedHash": "e067b910bb1ea092ca4b3e1965caa5139bab74277ac47f0f7cddd2398eb8ab37"
+    },
+    "do-setup": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-setup/SKILL.md",
+      "computedHash": "a4121d3d670b589bcf086530fda650bace8656f179ba8025c5a7d91faaba27ab"
+    },
+    "do-shared": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-shared/SKILL.md",
+      "computedHash": "98a4d9c09a2a30204c1db59415f09151a6488c9b896c4b579664c61bd9a002be"
+    },
+    "do-status": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-status/SKILL.md",
+      "computedHash": "11e423b613f3943a466c4e696c677655a12c38bc65fd3c2f3245af649cfb40cc"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "ca7b0c0c6e5f2750043f7f0cd72d16ac4e2abc48f9b5500d047a4b77a2506212"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-mysteria: #1b1938;
+  --color-lavender: #cbb7fb;
+  --color-charcoal: #292827;
+  --color-cream: #e9e5dd;
+  --color-parchment: #dcd7d3;
+  --color-white: #ffffff;
+  --color-white-95: rgba(255, 255, 255, 0.95);
+  --color-white-80: rgba(255, 255, 255, 0.8);
+  --color-amethyst: #714cb6;
+
+  --font-family: 'Super Sans VF', system-ui, -apple-system, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+  --weight-body: 460;
+  --weight-display: 540;
+  --weight-bold: 700;
+
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  --max-width: 1200px;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: var(--weight-body);
+  line-height: 1.50;
+  color: var(--color-charcoal);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-family);
+  border: none;
+  outline: none;
+}
+
+input {
+  font-family: var(--font-family);
+  outline: none;
+}
