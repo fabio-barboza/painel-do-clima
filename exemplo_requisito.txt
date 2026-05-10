@@ -73,6 +73,16 @@ Estrutura dos projetos
 
 ---
 
+Restrições técnicas importantes
+----------------------------------
+
+- **Sem cache HTTP:** Nenhum tipo de cache entre frontend e backend. O backend deve desabilitar ETags e retornar `Cache-Control: no-store`. O frontend deve usar `fetch` com `cache: 'no-store'`.
+- **Conectividade frontend → backend:** Definir explicitamente se usa proxy do dev server (ex: Vite proxy) ou URL absoluta com CORS (`origin: '*'` em dev).
+- **Portas:** Documentar a porta de cada serviço em desenvolvimento e produção.
+- **CORS:** Configurar CORS no backend para aceitar requisições do frontend. Definir origens, métodos e headers permitidos.
+
+---
+
 Interface (parte que mais me importa visualmente)
 --------------------------------------------------
 
