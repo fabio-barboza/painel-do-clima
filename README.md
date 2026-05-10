@@ -1,6 +1,6 @@
 # Painel do Clima
 
-Projeto full stack para monitoramento climático com separação clara entre frontend e backend.
+Estrutura base (scaffold) de um projeto full stack para monitoramento climático, destinada a testes de implementação e validação de arquitetura, com separação clara entre frontend e backend.
 
 ## 📋 Índice
 
