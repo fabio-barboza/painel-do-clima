@@ -1,120 +1,131 @@
 Painel de Monitoramento de Clima
-=================================
 
-A ideia principal é ter um painel full stack — React no frontend e Node.js no backend — que consuma a API do Open-Meteo pra mostrar informações climáticas de qualquer cidade. Uma coisa importante que quero garantir desde o início: o frontend nunca vai bater direto na API externa. Tudo passa pelo backend, sem exceção.
+A proposta é criar um painel full stack para consulta climática usando
+React no frontend e Node.js no backend.
 
----
+A aplicação deve permitir que o usuário consulte informações
+meteorológicas de qualquer cidade de forma simples, rápida e com uma
+interface visualmente agradável. A ideia é que seja uma experiência
+moderna, responsiva e preparada para funcionar bem em dispositivos
+mobile, tablet e web.
 
-O que o painel precisa mostrar
---------------------------------
+A arquitetura precisa respeitar uma regra importante desde o início: o
+frontend nunca deve consumir a API da Open-Meteo diretamente. Toda
+comunicação com serviços externos deve passar obrigatoriamente pelo
+backend, que será o responsável por intermediar requisições, resolver
+geolocalização e retornar os dados necessários para a interface.
 
-Clima atual da cidade:
-- Temperatura
-- Umidade
-- Vento
-- Índice UV
-- Precipitação
+O fluxo esperado é simples: o usuário digita o nome de uma cidade, o
+frontend envia essa informação para o backend, o backend consulta a API
+de geocoding da Open-Meteo para transformar o nome da cidade em latitude
+e longitude e, em seguida, usa essas coordenadas para consultar a API de
+previsão do tempo. Depois disso, devolve os dados ao frontend, que
+apenas renderiza as informações.
 
-Previsão por hora:
-- Temperatura
-- Precipitação
+As integrações externas usadas serão:
 
-Previsão dos próximos 7 dias:
-- Temperatura mínima e máxima
-- Precipitação
+Geocoding: https://geocoding-api.open-meteo.com/v1/search
 
----
+Clima: https://api.open-meteo.com/v1/forecast
 
-Como vai funcionar (fluxo básico)
-------------------------------------
+O backend pode retornar os dados seguindo o mesmo formato da Open-Meteo,
+sem necessidade de remodelagem complexa neste momento.
 
-1. Usuário digita o nome da cidade no frontend
-2. Frontend chama o backend
-3. Backend converte a cidade em coordenadas (via API de geocoding)
-4. Com as coordenadas em mãos, o backend busca os dados de clima
-5. Retorna tudo pro frontend
+A aplicação deve expor um endpoint principal:
 
-Simples assim. O frontend não toca na API do Open-Meteo em nenhum momento.
+GET /api/weather?city=
 
----
+Os retornos esperados são:
 
-APIs externas que vou usar
-----------------------------
+-   200 quando a consulta for bem sucedida
+-   400 quando houver parâmetros inválidos
+-   404 quando a cidade não for encontrada
 
-Geocoding (cidade → lat/lon):
-  https://geocoding-api.open-meteo.com/v1/search
+Ao acessar a aplicação, o usuário já deve cair diretamente no painel
+principal pela rota “/”, sem telas intermediárias.
 
-Clima:
-  https://api.open-meteo.com/v1/forecast
+A estrutura do projeto deve ser separada em dois diretórios
+independentes:
 
-O payload que o backend retorna pode seguir o mesmo formato da API do Open-Meteo, sem precisar remodelar tudo.
+/frontend para a aplicação React /backend para o servidor Node.js
 
----
+O painel deve mostrar as condições climáticas atuais da cidade
+pesquisada, incluindo temperatura, umidade, velocidade do vento, índice
+UV e precipitação.
 
-Endpoint do backend
----------------------
+Também deve exibir previsão por hora, contendo temperatura e
+precipitação em formato gráfico interativo, além de uma previsão para os
+próximos sete dias mostrando mínima, máxima e volume de chuva de forma
+comparativa.
 
-GET /api/weather?city=<cidade>
+A experiência visual é uma parte central do projeto.
 
-Respostas esperadas:
-- 200 → tudo certo, dados retornados
-- 400 → parâmetros inválidos
-- 404 → cidade não encontrada
+A interface precisa ser responsiva e adaptada para mobile, tablet e web.
+O painel deve usar cards visuais com ícones animados representando o
+clima, skeleton loading enquanto os dados estão carregando e feedback
+visual claro durante buscas.
 
-O ponto de entrada da aplicação vai ser o "/" do frontend — ou seja, quando o usuário abrir o sistema, já cai direto no painel, sem nenhuma tela intermediária.
+A identidade visual deve mudar dinamicamente conforme as condições
+climáticas. Céu limpo pode usar tons azulados, tempo nublado tons
+acinzentados e chuva tons mais escuros e frios.
 
----
+O índice UV deve ser apresentado como uma barra gradiente variando entre
+verde e vermelho.
 
-Estrutura dos projetos
-------------------------
+Os cards da previsão semanal devem mostrar visualmente a variação entre
+mínima e máxima através de indicadores gráficos simples.
 
-./frontend  → aplicação React
-./backend   → servidor Node.js
+A busca deve ser feita por um campo de texto simples, sem autocomplete
+nesta versão.
 
----
+Também deve existir um botão para usar a geolocalização do navegador e
+consultar automaticamente o clima da localização atual do usuário.
 
-Restrições técnicas importantes
-----------------------------------
+Caso a cidade não seja encontrada, a aplicação deve exibir uma mensagem
+amigável orientando nova tentativa.
 
-- **Sem cache HTTP:** Nenhum tipo de cache entre frontend e backend. O backend deve desabilitar ETags e retornar `Cache-Control: no-store`. O frontend deve usar `fetch` com `cache: 'no-store'`.
-- **Conectividade frontend → backend:** Definir explicitamente se usa proxy do dev server (ex: Vite proxy) ou URL absoluta com CORS (`origin: '*'` em dev).
-- **Portas:** Documentar a porta de cada serviço em desenvolvimento e produção.
-- **CORS:** Configurar CORS no backend para aceitar requisições do frontend. Definir origens, métodos e headers permitidos.
+Se houver falha de comunicação, o usuário deve receber feedback claro e
+uma opção de tentar novamente.
 
----
+Existem algumas restrições técnicas importantes que precisam ser
+respeitadas.
 
-Interface (parte que mais me importa visualmente)
---------------------------------------------------
+Não deve existir nenhum tipo de cache HTTP entre frontend e backend.
 
-Quero que fique bonito e funcional. Algumas coisas que já tenho em mente:
+No backend, ETags devem ser desabilitadas e todas as respostas precisam
+retornar Cache-Control: no-store.
 
-- Layout responsivo, pensando mobile primeiro
-- Cards com ícones animados representando o clima
-- Gráfico interativo pra previsão por hora
-- Skeleton loading enquanto os dados ainda estão carregando
-- Cores dinâmicas conforme o clima (azul pra céu limpo, cinza pra nublado, etc.)
-- Barra visual do índice UV com gradiente de verde a vermelho
-- Cards dos 7 dias com barrinhas visuais de mín/máx
-- Campo de busca de cidade (sem autocomplete por enquanto)
-- Botão pra usar a geolocalização do próprio usuário
-- Feedback visual de loading durante a busca
-- Mensagem amigável quando a cidade não for encontrada
-- Tratamento de erro com opção de tentar de novo
+No frontend, toda chamada fetch deve usar explicitamente cache:
+‘no-store’.
 
----
+A estratégia de comunicação entre frontend e backend precisa ser
+definida de forma explícita. Pode ser usado proxy do dev server (como
+Vite proxy) ou comunicação via URL absoluta com CORS habilitado, mas
+isso deve estar documentado e consistente em todo o projeto.
 
-Como validar depois que tiver pronto
----------------------------------------
+As portas usadas pelo frontend e backend precisam estar claramente
+documentadas tanto para ambiente de desenvolvimento quanto para
+produção.
 
-Vou testar com curl:
-- Primeiro bater direto nas APIs do Open-Meteo pra confirmar os retornos
-- Depois testar o endpoint do backend
+O backend deve possuir configuração explícita de CORS definindo origens
+aceitas, métodos permitidos e headers autorizados. Durante
+desenvolvimento pode aceitar qualquer origem, mas isso precisa estar
+documentado.
 
----
+Depois da implementação, a validação será feita primeiro testando
+diretamente as APIs da Open-Meteo via curl para conferir estrutura e
+retorno esperado.
 
-O que NÃO faz parte do escopo
---------------------------------
+Depois disso, será testado o endpoint interno do backend para garantir
+que a resposta está sendo repassada corretamente ao frontend.
 
-- Tema claro/escuro → não vai ter
-- Comentários no código → não quero
-- Frontend consumindo a API diretamente → jamais
+Algumas coisas estão fora de escopo e não devem ser implementadas agora:
+
+-   tema claro/escuro
+-   autocomplete de cidades
+-   comentários no código
+-   remodelagem avançada do payload da Open-Meteo
+-   qualquer chamada direta da API externa pelo frontend
+
+A entrega esperada é um scaffold funcional, limpo e bem separado, pronto
+para servir como base para evoluções futuras.
