@@ -1,9 +1,46 @@
 # Painel do Clima
 
-Estrutura base (scaffold) de um projeto full stack para monitoramento climático, destinada a testes de implementação e validação de arquitetura, com separação clara entre frontend e backend.
+Estrutura base (scaffold) de um projeto full stack para monitoramento climático, com separação clara entre frontend (React + Vite) e backend (Node.js + Express). O código de aplicação aqui é propositalmente mínimo: o que importa é a base servir de campo de provas para um fluxo de desenvolvimento orientado a especificação.
+
+## 🎯 Objetivo
+
+O objetivo deste repositório é **usar e validar o framework [Development Orchestrator](https://github.com/fabio-barboza/development-orchestrator) (DO)** sobre uma base full stack real, do zero até a entrega com QA.
+
+O DO é um framework de **SDD (Spec-Driven Development / Desenvolvimento Orientado a Especificação)**: nada é implementado antes de estar documentado. Em vez de partir direto para o código, o trabalho percorre uma cadeia de artefatos rastreáveis que elimina ambiguidade e reduz retrabalho:
+
+```
+PRD → TechSpec → Tasks → Execução → Review → QA
+```
+
+- **PRD** — o *que* será construído e por quê (requisitos de produto).
+- **TechSpec** — *como* será construído (decisões técnicas, contratos, arquitetura).
+- **Tasks** — a quebra da TechSpec em unidades pequenas e executáveis.
+- **Execução** — cada task é implementada individualmente, sempre acompanhada de testes.
+- **Review** — a implementação é validada contra a especificação que a originou.
+- **QA** — testes end-to-end automatizados via MCP (Model Context Protocol), com ciclo de bugfix.
+
+Cada etapa gera artefatos versionados, então é sempre possível rastrear uma linha de código até a task, a TechSpec e o requisito de produto que a justificam.
+
+### Fluxo do DO neste projeto
+
+| Fase | Comandos principais |
+|------|---------------------|
+| 1. Planejamento | `do-setup`, `do-create-prd`, `do-create-techspec`, `do-create-tasks` |
+| 2. Execução | `do-execute-task`, `do-execute-all-tasks` (subagentes isolados, em sequência) |
+| 3. Code Review | `do-execute-review`, `do-execute-review-fix` |
+| 4. QA & Bugfix | `do-execute-qa`, `do-execute-qa-bugfix` |
+| Acompanhamento | `do-status` (progresso e ponto de retomada) |
+
+Duas regras do framework valem destaque, porque moldam como este scaffold foi montado:
+
+- **Uma task nunca é concluída com teste falhando.** Por isso frontend e backend já vêm com stack de testes e cobertura configuradas desde o commit inicial.
+- **Sem artefato de review, a task continua aberta.** A validação faz parte da entrega, não é etapa opcional.
+
+Consulte a documentação do [Development Orchestrator](https://github.com/fabio-barboza/development-orchestrator) para instalação dos comandos e detalhes de cada fase.
 
 ## 📋 Índice
 
+- [Objetivo](#-objetivo)
 - [Stack Tecnológica](#-stack-tecnologica)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Inicialização](#-inicializacao)
