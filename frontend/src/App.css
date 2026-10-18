@@ -1,0 +1,204 @@
+.app-shell {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.panel-subtitle,
+.panel-idle {
+  margin: 0;
+  max-width: 42rem;
+}
+
+.panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.panel-city-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.error-state {
+  align-items: flex-start;
+  max-width: 42rem;
+}
+
+.error-state-retry {
+  align-self: flex-start;
+}
+
+.hourly-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.hourly-chart-canvas {
+  width: 100%;
+}
+
+.hourly-chart-tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 10rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.hourly-chart-tooltip p {
+  margin: 0;
+}
+
+.hourly-chart-tooltip-hour {
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.hourly-chart-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.hourly-chart-tooltip-label {
+  color: var(--color-text-muted);
+}
+
+.weekly-forecast {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.weekly-forecast-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+.weekly-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  text-align: center;
+}
+
+.weekly-day-weekday {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+}
+
+.weekly-day-temps {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-tight);
+}
+
+.weekly-day-temp-min {
+  color: var(--color-text-muted);
+}
+
+.weekly-day-temp-max {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.weekly-day-range {
+  width: 100%;
+}
+
+.weekly-day-range-track {
+  position: relative;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+}
+
+.weekly-day-range-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-width: 4px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+}
+
+.weekly-day-rain {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.weekly-day-rain-track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+}
+
+.weekly-day-rain-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+}
+
+.weekly-day-rain-value {
+  min-width: 3.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 640px) {
+  .weekly-forecast-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .weekly-forecast-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

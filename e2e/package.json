@@ -1,0 +1,13 @@
+{
+  "name": "painel-do-clima-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes E2E (Playwright) do Painel do Clima",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}

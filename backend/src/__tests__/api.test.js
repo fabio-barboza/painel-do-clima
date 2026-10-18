@@ -1,7 +1,9 @@
 const request = require('supertest');
-const app = require('../../src/index');
+const createApp = require('../app');
 
 describe('API Endpoints', () => {
+  const app = createApp();
+
   describe('GET /health', () => {
     test('should return health status', async () => {
       const response = await request(app)
@@ -17,12 +19,14 @@ describe('API Endpoints', () => {
   });
 
   describe('Unknown routes', () => {
-    test('should return 404 for unknown routes', async () => {
+    test('should return 404 JSON for unknown routes', async () => {
       const response = await request(app)
         .get('/unknown-route')
-        .expect(404);
+        .expect(404)
+        .expect('Content-Type', /json/);
 
-      expect(response.body).toBeDefined();
+      expect(response.body).toHaveProperty('error', 'NOT_FOUND');
+      expect(response.body).toHaveProperty('message');
     });
   });
 });

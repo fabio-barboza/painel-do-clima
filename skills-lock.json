@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "skills": {
+    "do-create-prd": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-create-prd/SKILL.md",
+      "computedHash": "a34660915c0dde04974f2a92e0f8ecd403f95fa4bc3b98f5268886f5286d7571"
+    },
+    "do-create-tasks": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-create-tasks/SKILL.md",
+      "computedHash": "8ee6d8751cf018cf557a33f3a380a8e82872ce489af4f2334a3fc66fa7dfac95"
+    },
+    "do-create-techspec": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-create-techspec/SKILL.md",
+      "computedHash": "9bbdb56f35685566913a5cb3aaeb3adcae1cf3c3a4a4404c0b6a7bcd75147f6f"
+    },
+    "do-execute-qa": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-qa/SKILL.md",
+      "computedHash": "989f8438be4e6d683497998ec23cbcf1a6ce302e3b1af6651c269ab068fa7c61"
+    },
+    "do-execute-qa-bugfix": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-qa-bugfix/SKILL.md",
+      "computedHash": "160a30e7a33264def69d43ed1f9e1634dfe1d1ca020fa1356d49c33cbcf5231f"
+    },
+    "do-execute-review": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-review/SKILL.md",
+      "computedHash": "2163ea86c5a5731ed18a519fffe50525d18b8ee98aeeb6660f81c8f91a5205c4"
+    },
+    "do-execute-review-fix": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-review-fix/SKILL.md",
+      "computedHash": "dc5f92e86885d578c8292c3eba6d05d5e71e1c0eca3ac1cba3d2ae17136c0112"
+    },
+    "do-execute-task": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-execute-task/SKILL.md",
+      "computedHash": "15cdb2a1a94e273044814b6335109ade3cc24bca9b35c435078d0b12e7234abc"
+    },
+    "do-setup": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-setup/SKILL.md",
+      "computedHash": "76b5c0e5da7c61a4de97a559e43c56f747cc4d041c234757133c1e088073883a"
+    },
+    "do-shared": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-shared/SKILL.md",
+      "computedHash": "9cc9cb8fa1acdf1483143f462e08e5ba16f1f74ae34bd5c6d920957e63584b93"
+    },
+    "do-status": {
+      "source": "fabio-barboza/development-orchestrator",
+      "sourceType": "github",
+      "skillPath": "skills/do-status/SKILL.md",
+      "computedHash": "4c6b440c0cfe596c4be4df1fd61835cb5f46c47d9149c6c5be1b13540b87b338"
+    }
+  }
+}

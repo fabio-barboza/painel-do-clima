@@ -9,16 +9,28 @@ coverage/
 dist/
 build/
 
-# Environment
+# E2E
+e2e/node_modules
+e2e/test-results
+
+# Environment (variáveis de ambiente nunca versionadas)
 .env
 .env.local
 .env.*.local
+frontend/.env.local
+backend/.env
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+
+# Scratch (do-* tasks)
+.do-tmp/
+
+# Agent/assistant tooling
+.playwright-mcp/
 
 # OS
 .DS_Store

@@ -1,26 +1,11 @@
 require('dotenv').config();
-const express = require('express');
+const { getEnv } = require('./config/env');
+const createApp = require('./app');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const { port } = getEnv();
+const app = createApp();
 
-// Middleware
-app.use(express.json());
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    message: 'Service is healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+  console.log(`Health check available at http://localhost:${port}/health`);
 });
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Health check available at http://localhost:${PORT}/health`);
-});
-
-module.exports = app;
