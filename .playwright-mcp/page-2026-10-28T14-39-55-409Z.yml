@@ -1,0 +1,128 @@
+- main [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e11]:
+      - heading "Painel do Clima" [level=1] [ref=e12]
+      - generic [ref=e13]: Tempo em tempo real
+    - generic [ref=e14]:
+      - generic [ref=e15]: 11:39:54
+      - generic [ref=e16]: quarta-feira, 28 de outubro
+  - search [ref=e18]:
+    - textbox "Pesquisar cidade ou região" [active] [ref=e21]:
+      - /placeholder: Pesquisar cidade ou região…
+      - text: Curitiba
+    - generic [ref=e22]:
+      - button "Pesquisar" [ref=e23] [cursor=pointer]
+      - button "Localização Atual" [ref=e27] [cursor=pointer]
+  - generic [ref=e49]:
+    - region "Temperatura atual" [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e53]: Curitiba, Paraná
+        - generic [ref=e57]: Atualizado 11:30
+      - generic [ref=e63]:
+        - generic [ref=e64]: 18°
+        - generic [ref=e65]: Nublado
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - text: Máx
+          - generic [ref=e70]: "22"
+        - generic [ref=e71]:
+          - text: Mín
+          - generic [ref=e74]: "12"
+        - generic [ref=e75]:
+          - text: Sensação
+          - generic [ref=e76]: "18"
+    - region "Previsão por hora" [ref=e78]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - heading "Previsão por hora" [level=2] [ref=e81]
+          - generic [ref=e82]: Temperatura ao longo do dia
+        - generic [ref=e83]: Temperatura (°C)
+        - generic [ref=e85]: Precipitação (mm)
+      - generic [ref=e87]:
+        - img "Gráfico de temperatura e precipitação por hora" [ref=e88]:
+          - generic [ref=e89]: 12°
+          - generic [ref=e90]: 16°
+          - generic [ref=e91]: 20°
+          - generic [ref=e92]: 24°
+          - generic [ref=e93]: 11h
+          - generic [ref=e94]: 14h
+          - generic [ref=e95]: 17h
+          - generic [ref=e96]: 20h
+          - generic [ref=e97]: 23h
+          - generic [ref=e98]: 02h
+          - generic [ref=e99]: 05h
+          - generic [ref=e100]: 08h
+          - generic [ref=e101]: agora
+        - generic:
+          - text: 22h ·
+          - generic: 15°C
+          - text: · 0 mm
+      - generic [ref=e117]: Passe o mouse ou toque no gráfico para ver os detalhes
+  - region "Detalhes do clima" [ref=e119]:
+    - generic [ref=e120]:
+      - generic [ref=e121]: Sensação térmica
+      - generic [ref=e126]: 18°C
+    - generic [ref=e128]:
+      - generic [ref=e129]: Umidade
+      - generic [ref=e134]: 65 %
+    - generic [ref=e136]:
+      - generic [ref=e137]: Vento
+      - generic [ref=e142]: 4 km/h · NNE
+    - generic [ref=e144]:
+      - generic [ref=e145]: Índice UV
+      - generic [ref=e150]: 6 · Alto
+  - region "Próximos sete dias" [ref=e153]:
+    - generic [ref=e155]:
+      - heading "Próximos 7 dias" [level=2] [ref=e156]
+      - generic [ref=e157]: Previsão diária com probabilidade de chuva
+    - generic [ref=e158]:
+      - generic [ref=e159]:
+        - generic [ref=e160]: Hoje
+        - generic [ref=e161]: 28 out
+        - generic [ref=e164]:
+          - generic [ref=e165]: 22°
+          - generic [ref=e166]: 12°
+        - generic [ref=e167]: 63%
+      - generic [ref=e170]:
+        - generic [ref=e171]: Qui
+        - generic [ref=e172]: 29 out
+        - generic [ref=e175]:
+          - generic [ref=e176]: 22°
+          - generic [ref=e177]: 14°
+        - generic [ref=e178]: 76%
+      - generic [ref=e181]:
+        - generic [ref=e182]: Sex
+        - generic [ref=e183]: 30 out
+        - generic [ref=e186]:
+          - generic [ref=e187]: 24°
+          - generic [ref=e188]: 15°
+        - generic [ref=e189]: 99%
+      - generic [ref=e192]:
+        - generic [ref=e193]: Sáb
+        - generic [ref=e194]: 31 out
+        - generic [ref=e197]:
+          - generic [ref=e198]: 21°
+          - generic [ref=e199]: 14°
+        - generic [ref=e200]: 99%
+      - generic [ref=e203]:
+        - generic [ref=e204]: Dom
+        - generic [ref=e205]: 1 nov
+        - generic [ref=e208]:
+          - generic [ref=e209]: 24°
+          - generic [ref=e210]: 15°
+        - generic [ref=e211]: 93%
+      - generic [ref=e214]:
+        - generic [ref=e215]: Seg
+        - generic [ref=e216]: 2 nov
+        - generic [ref=e219]:
+          - generic [ref=e220]: 25°
+          - generic [ref=e221]: 16°
+        - generic [ref=e222]: 72%
+      - generic [ref=e225]:
+        - generic [ref=e226]: Ter
+        - generic [ref=e227]: 3 nov
+        - generic [ref=e230]:
+          - generic [ref=e231]: 29°
+          - generic [ref=e232]: 17°
+        - generic [ref=e233]: 66%
+  - generic [ref=e45]: Painel do Clima · dados reais via Open-Meteo · feito com React e Node.js

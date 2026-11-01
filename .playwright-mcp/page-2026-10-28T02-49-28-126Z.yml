@@ -1,0 +1,26 @@
+- main [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e11]:
+      - heading "Painel do Clima" [level=1] [ref=e12]
+      - generic [ref=e13]: Tempo em tempo real
+    - generic [ref=e14]:
+      - generic [ref=e15]: 23:49:27
+      - generic [ref=e16]: terça-feira, 27 de outubro
+  - search [ref=e18]:
+    - textbox "Pesquisar cidade ou região" [active] [ref=e21]:
+      - /placeholder: Pesquisar cidade ou região…
+      - text: Curitiba
+    - generic [ref=e22]:
+      - button "Pesquisar" [ref=e23] [cursor=pointer]
+      - button "Localização Atual" [ref=e27] [cursor=pointer]
+  - generic [ref=e48]:
+    - region "Temperatura atual" [ref=e49]
+    - region "Previsão por hora" [ref=e56]:
+      - generic [ref=e57]:
+        - generic:
+          - heading [level=2]
+  - region "Próximos sete dias" [ref=e77]:
+    - generic [ref=e78]:
+      - generic:
+        - heading [level=2]
+  - generic [ref=e45]: Painel do Clima · dados reais via Open-Meteo · feito com React e Node.js

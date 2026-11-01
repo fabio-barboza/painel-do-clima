@@ -1,0 +1,21 @@
+- main [ref=e4]:
+  - generic [ref=e6]:
+    - generic [ref=e11]:
+      - heading "Painel do Clima" [level=1] [ref=e12]
+      - generic [ref=e13]: Tempo em tempo real
+    - generic [ref=e14]:
+      - generic [ref=e15]: 11:37:57
+      - generic [ref=e16]: quarta-feira, 28 de outubro
+  - search [ref=e18]:
+    - textbox "Pesquisar cidade ou região" [ref=e21]:
+      - /placeholder: Pesquisar cidade ou região…
+    - generic [ref=e22]:
+      - button "Pesquisar" [ref=e23] [cursor=pointer]
+      - button "Localização Atual" [ref=e27] [cursor=pointer]
+  - region "Clima vazio" [ref=e31]:
+    - heading "Pesquise uma cidade" [level=2] [ref=e34]
+    - generic [ref=e35]: Digite o nome de uma cidade acima ou use sua localização para ver o clima agora.
+    - generic [ref=e36]:
+      - button "Pesquisar" [ref=e37] [cursor=pointer]
+      - button "Localização Atual" [ref=e41] [cursor=pointer]
+  - generic [ref=e45]: Painel do Clima · dados reais via Open-Meteo · feito com React e Node.js
