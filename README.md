@@ -110,7 +110,13 @@ painel-do-clima/
 
 4. **Configurar variáveis de ambiente (opcional)**
    
-   Crie arquivos `.env` nas pastas respectivas, se necessário:
+   Copie os modelos e ajuste os valores, se necessário (a tabela de variáveis está em [Comunicação e portas](#-comunicação-e-portas)):
+
+   ```bash
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env.local
+   ```
+
    
    Frontend (`frontend/.env.local`):
    ```env
@@ -120,6 +126,8 @@ painel-do-clima/
    Backend (`backend/.env`):
    ```env
    PORT=3000
+   NODE_ENV=development
+   CORS_ORIGINS=
    ```
 
 5. **Verificar instalação**
@@ -134,6 +142,51 @@ painel-do-clima/
    cd ../backend
    npm test
    ```
+
+## 🔌 Comunicação e portas
+
+O frontend chama o backend por URL absoluta, com CORS explícito (sem proxy do Vite). O frontend nunca chama a Open-Meteo: toda consulta passa pelo backend em `GET /api/weather`.
+
+| Ambiente | Frontend | Backend | Origem da API | CORS |
+|---|---|---|---|---|
+| Desenvolvimento | `npm run dev`, porta 5173 | `npm run dev`, porta 3000 | `VITE_API_URL=http://localhost:3000` | Sem `CORS_ORIGINS`, responde `Access-Control-Allow-Origin: *` |
+| Produção | `npm run build` + `npm run preview`, porta 4173 | `npm start`, porta 3000 | `VITE_API_URL` definido no build | Somente as origens de `CORS_ORIGINS`, ex.: `http://localhost:4173` |
+
+**Variáveis de ambiente**
+
+| Arquivo | Variável | Padrão | Uso |
+|---|---|---|---|
+| `backend/.env` | `PORT` | `3000` | Porta do backend |
+| `backend/.env` | `NODE_ENV` | `development` | `production` ativa a regra de CORS sem origem liberada |
+| `backend/.env` | `CORS_ORIGINS` | vazio | Origens liberadas, separadas por vírgula. Ex.: `http://localhost:4173` |
+| `frontend/.env.local` | `VITE_API_URL` | `http://localhost:3000` | URL absoluta do backend |
+
+Modelos: `backend/.env.example` e `frontend/.env.example`.
+
+**Regras**
+
+- `VITE_API_URL` é lido pelo Vite no dev server e no build. Sem a variável, o frontend usa `http://localhost:3000`. Altere-a antes de `npm run build`.
+- Em `NODE_ENV=production` sem `CORS_ORIGINS`, nenhuma origem é liberada.
+- Em desenvolvimento, liberar qualquer origem (`Access-Control-Allow-Origin: *`) é permitido e é o comportamento padrão.
+- Todas as respostas do backend levam `Cache-Control: no-store` e não têm ETag. Toda chamada `fetch` do frontend usa `cache: 'no-store'`.
+- A geolocalização do navegador exige contexto seguro: `localhost` funciona; fora de `localhost`, a produção precisa de HTTPS.
+- `npm test` no frontend fica em modo watch e não encerra sozinho. Use `npm test -- run` para uma execução única.
+
+**Subir os dois ambientes**
+
+Desenvolvimento (dois terminais):
+
+```bash
+cd backend && npm run dev     # http://localhost:3000
+cd frontend && npm run dev    # http://localhost:5173
+```
+
+Produção local (backend com `backend/.env` contendo `NODE_ENV=production` e `CORS_ORIGINS=http://localhost:4173`):
+
+```bash
+cd backend && npm start                  # http://localhost:3000
+cd frontend && npm run build && npm run preview   # http://localhost:4173
+```
 
 ## ▶️ Execução
 
@@ -181,7 +234,7 @@ npm start
 
 **Comandos:**
 ```bash
-# Modo watch (reexecuta automaticamente)
+# Modo watch (reexecuta automaticamente; não encerra sozinho)
 npm test
 
 # Executar uma vez
@@ -240,6 +293,7 @@ npm run test:watch
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | GET | `/health` | Health check do serviço |
+| GET | `/api/weather?city=` ou `?lat=&lon=` | Clima atual, horário e diário, via Open-Meteo. 200, 400, 404 ou 502 |
 
 ## 📝 Notas
 

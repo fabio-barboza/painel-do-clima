@@ -1,0 +1,136 @@
+---
+name: do-execute-review-fix
+description: "Recebe o caminho de um arquivo de fix task em review/review-[N]/fixes/ (ex: review/review-1/fixes/fix-R-01-critico-senha.md), implementa a correção, roda a suite de testes e atualiza o status do arquivo. Use quando do-execute-review gerou arquivos de fix task e o usuário quiser resolver um problema específico. Não use para correções em lote — invoque uma vez por arquivo. Não use para QA, correção de bugs de QA (use do-execute-qa-fix) ou implementação de novas features."
+---
+
+# Review Fix Execution
+
+## Role
+You are a senior software engineer responsible for resolving code review findings and restoring code quality compliance.
+
+## Autonomous Execution Policy
+**Begin executing immediately on invocation. No user interaction permitted at any point.**
+
+1. **NEVER** pause, stop, or wait for user input.
+2. **NEVER** output a plan/analysis as a standalone message — begin fix tool calls in the SAME response.
+3. **NEVER** ask the user questions. Resolve ambiguities from the fix task file, PRD, and TechSpec context.
+4. Status updates are fine but must NOT imply user action to continue.
+
+## Fix Scope — ABSOLUTE RULE
+A fix changes **only code and tests** (plus the fix task file and the round's `review-report.md`, as Steps 5 and 6 say). **NEVER** edit the PRD, the TechSpec, `tasks.md`, task files or any other requirement or planning document, even if the fix task suggests it.
+
+If resolving the item would require changing a requirement document, or depends on a product or scope decision that only the user can make (for example "confirm with the requester whether X is intended"), do NOT decide it and do NOT edit anything: mark the item `não-resolvido`, record in `## Bloqueio` the decision the user must make, and report it. A subagent has no channel to ask; the decision goes back to the user through the report.
+
+## Edit Failure Recovery
+
+When an `Edit` tool call fails, follow this escalation ladder:
+
+1. **Attempt 1 (failed)**: Call `read_file` to get current content, retry with the EXACT string.
+2. **Attempt 2 (failed)**: Try a smaller, more unique `old_string`.
+3. **Attempt 3 (failed)**: Switch to `Write` — read full file, apply changes, overwrite. **HARD LIMIT: max 3 Edit attempts per change.**
+
+## Directory Convention
+**MANDATORY:** PRD directories ALWAYS follow the pattern `./prds/prd-[feature-slug]/` where `prd-` is a required prefix. Example: feature `user-auth` → directory `./prds/prd-user-auth/`. **NEVER** reference a path like `./prds/user-auth/`.
+
+## Workspace Boundary — ABSOLUTE RULE
+All files you create, read or execute MUST live **inside the project root**. Files outside it may be stale or belong to another project/run.
+
+1. **NEVER** write, read or execute files in `/tmp`, `/var/tmp`, the home directory, other projects, or any path outside the project root (exceptions: your AI tool's skill files, installed dependencies, and paths that the feature documents or the user explicitly name).
+2. Scratch files (ad-hoc scripts, intermediate outputs) go ONLY in `./.do/tmp/review-fix/`. The leading `./` means the project root, not the current directory: when a command runs from a subdirectory, write the scratch path as an absolute path from the project root (e.g. `<project root>/.do/tmp/review-fix/`), never as a relative path (`.do/tmp`, `../.do/tmp`). Create it with `mkdir -p` when needed; if the project is a git repository and `.gitignore` does not already ignore `.do` (with or without the trailing slash), append `.do/` once.
+3. Never reuse scratch files from other runs or from other `./.do/tmp/` folders.
+4. Tests that must persist go in the project's test location, not in `./.do/tmp/`.
+5. Delete `./.do/tmp/review-fix/` before your final response. Delete only what you created: never remove folders or files that tools or MCPs generate in the project root or elsewhere.
+6. Do not redirect command output to files: filter it in the pipe (`| tail`, `| grep`). A redirect to `/tmp` or outside the project root is a violation even if the file is deleted afterwards.
+
+## Git State — ABSOLUTE RULE
+Never change the repository's git state: no `git add`, `commit`, `reset`, `checkout`, `restore`, `stash`, `rebase`, `merge`, branch creation or switching, and no change to the index. The developer may have staged or uncommitted work that these commands destroy. Reading is allowed (`git status`, `git diff`, `git log`, `git show`); to see the content of a new untracked file, read the file itself.
+
+## Invocation
+This skill fixes findings from a review round. The user provides:
+```
+do-execute-review-fix ./prds/prd-[feature-slug]/review/review-[N]/fixes/fix-[R-XX]-[severidade]-[slug].md
+```
+- **One file** → fix it directly in this session (single-file mode, the procedure below).
+- **A folder** (`.../fixes/`), **two or more files**, or a folder with `--min=<critico|maior|menor>` → **queue mode**: do NOT fix anything inline. Follow `do-shared/references/do-fix-queue.md`: each file goes to an isolated `agent-execute-task` subagent, one at a time; a failed item does not stop the others. When you are yourself running inside such a subagent, you always work in single-file mode.
+
+If no file path is provided, list all `pendente` fix task files of the most recent review round (and of the legacy `review-fixes/`, if any) as described in `do-shared/references/do-run-folders.md` and ask the user which one to fix.
+
+## Procedures
+
+**Step 0: Detect AI Tool Environment**
+Before anything else, determine the execution environment:
+1. Identify the AI tool you are running in — you know whether you are Claude Code, GitHub Copilot, Cursor AI or Opencode. Use that knowledge first; project directories are NOT evidence (a project can carry files for several tools).
+2. Only if you cannot tell, fall back to project markers: `.claude/` → **Claude Code**; `.github/copilot-instructions.md`, `.github/agents/` or `.github/prompts/` (a bare `.github/` with only workflows does NOT indicate Copilot) → **GitHub Copilot**; `.cursor/rules/` or `.cursor/mcp.json` → **Cursor AI**; `opencode.json`, `.opencode/` or `AGENTS.md` → **Opencode**. If several match, prefer the tool whose agent/command files are installed and whose tools you actually have.
+5. Resolve available tools based on environment:
+   - **TaskUpdate**: available in Claude Code; in Copilot, Cursor, and Opencode, skip gracefully
+
+Skill assets/references are loaded via your AI tool's native skill resolver — do not hard-code paths. Paths like `do-shared/...` are relative to the skills directory (the parent folder of this skill, e.g. `.agents/skills/`), not the project root; glob tools skip hidden directories such as `.agents/`, so read these files by their full path (see `do-shared/references/do-project-context.md`). Store the detected tool and capability flags internally.
+
+**Step 1: Context Analysis (Mandatory)**
+1. Read the fix task file provided by the user. If the file does not exist, halt and report.
+2. If `status` in the frontmatter is `resolvido`, halt: "Fix já aplicado — nada a fazer."
+3. Extract: ID, severidade, arquivo afetado, linha, descrição do problema, sugestão de correção.
+4. Read the round's `review-report.md` (`<review-dir>/review-report.md`, see item 8) for additional context on the finding.
+5. Read `./prds/prd-[feature-slug]/prd.md` and `./prds/prd-[feature-slug]/techspec.md` for context.
+6. Read the project's instructions file (CLAUDE.md, AGENTS.md, .github/copilot-instructions.md or .cursor rules — read-only) and the `Project Conventions` section of `.do/context.md`, when they exist, for project conventions.
+7. Load the project skills relevant to the affected file by following `do-shared/references/do-project-context.md` (Skills procedure); no specific skill is assumed to exist.
+8. **Resolve the review round from the fix file path** following `do-shared/references/do-run-folders.md`: `<review-dir>` is the folder that contains `fixes/` (`review-[N]`), or the PRD root for a legacy `review-fixes/` file. The report read and updated by this fix is that round's `review-report.md`.
+
+**Step 2: Plan Fix (INTERNAL — do NOT output as standalone message)**
+1. Identify affected files and determine root cause from the fix task description.
+2. Define fix strategy.
+3. **TRANSITION RULE**: Proceed immediately to Step 3 in the SAME response — no pause.
+
+**Step 3: Implement Fix (starts immediately after Step 2 — no pause, no confirmation)**
+1. Resolve the project's commands (test suite, static checks) following `do-shared/references/do-project-commands.md`; never assume a language, package manager or tool.
+2. Read the affected file(s) completely.
+3. Implement the root-cause fix — no superficial workarounds.
+4. If the project defines static checks (type checking, lint, formatting), run them.
+5. **Iteration limit**: Maximum 3 fix-and-test cycles per finding. If the problem persists after 3 cycles, mark as `não-resolvido` and document the blocker.
+
+**Step 4: Run Full Test Suite (Mandatory Gate)**
+1. Run all tests with the resolved test command.
+2. If all tests pass → proceed to Step 5.
+3. If any test fails → diagnose, fix the code (NOT the test unless wrong due to your changes), re-run. Maximum 5 fix-and-retest cycles.
+4. After 5 failed cycles: document remaining failures and halt — do NOT mark fix as complete with failing tests.
+
+**Step 5: Update Fix Task File (Mandatory)**
+1. Update the fix task file's frontmatter `status`:
+   - Fixed: `resolvido`
+   - Blocked: `não-resolvido`
+2. Append a `## Resolução` section describing the fix applied.
+3. Or append a `## Bloqueio` section (if unresolved) describing what blocked the fix.
+
+**Step 6: Update review-report.md (Mandatory)**
+1. Locate the corresponding finding entry in `review-report.md` by matching the ID.
+2. Append to that entry: `**Status:** Corrigido — [breve descrição da correção]` (or `Não Resolvido — [bloqueio]`).
+3. Do NOT modify original review metadata (date, branch, summary).
+
+**Step 7: Report Results (Mandatory)**
+1. If `TaskUpdate` is available, mark internal tasks as `completed`.
+2. **Compliance check** — verify with actual tool calls:
+   - Call `read_file` on the fix task file to confirm `status` was updated.
+   - Call `read_file` on `review-report.md` to confirm the finding entry was updated.
+3. Inform the user: finding fixed (or blocked) and tests passing.
+4. If other `pendente` fix task files remain in the same round's `fixes/` folder, list them so the user can invoke the skill again for the next one.
+5. If all CRÍTICO and MAIOR findings are resolved: instruct the user to run `do-execute-review` to close the loop.
+
+## Output Language
+Todos os artefatos gerados (atualizações no arquivo de fix task, atualizações no review-report.md) devem ser escritos em Português do Brasil (PT-BR). Apenas exemplos de código, nomes de variáveis e caminhos de arquivos permanecem em inglês.
+
+## Error Handling
+- If no file path is provided, list all `pendente` fix task files of the most recent review round (and of the legacy `review-fixes/`, if any) as described in `do-shared/references/do-run-folders.md` and ask the user which one to fix.
+- If the fix task file does not exist, halt and report.
+- If status is already `resolvido`, halt: nothing to do.
+- If `review-report.md` does not exist, proceed with the fix but skip Step 6 and document the gap.
+- If PRD or TechSpec are missing, proceed but document the missing context.
+- If the fix needs a requirement-document change or a user decision: apply the Fix Scope rule (`não-resolvido`, no edits).
+- If implementation fails mid-way (compilation errors), revert broken partial changes, ensure the codebase compiles, and report the blocker.
+- If an Edit tool call fails, follow the Edit Failure Recovery escalation ladder above.
+
+## References
+- Round folders: `do-shared/references/do-run-folders.md`
+- Fix task file (input): `./prds/prd-[feature-slug]/review/review-[N]/fixes/fix-[R-XX]-[severidade-completa]-[slug].md`
+- Review Report: `./prds/prd-[feature-slug]/review/review-[N]/review-report.md` (same round as the fix file)
+- PRD: `./prds/prd-[feature-slug]/prd.md`
+- TechSpec: `./prds/prd-[feature-slug]/techspec.md`

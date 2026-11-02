@@ -1,0 +1,43 @@
+.bar-uv i{background:linear-gradient(90deg,#4ade80,#ffd76a,#ff8a5c,#ef4444);background-size:calc(100% / var(--f)) 100%}
+
+.d-range{width:100%;margin-top:6px}
+.d-range i{margin-left:var(--l)}
+
+.precip-bar{fill:#7cc4ff;opacity:0;transition:opacity 1.4s ease .9s}
+.precip-bar.show{opacity:.55}
+@media (prefers-reduced-motion:reduce){.precip-bar{opacity:.55}}
+
+.chart-legend{display:flex;gap:10px;flex-wrap:wrap}
+.dotline.rain{background:#7cc4ff}
+
+.notice{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.notice p{font-size:14px;font-weight:500}
+
+.btn.is-busy{opacity:.7;cursor:progress}
+.btn.is-busy .ico{animation:spin 1.1s linear infinite}
+
+.skel{color:transparent;background:rgba(255,255,255,.08);border-radius:5px;animation:skelPulse 1.6s ease-in-out infinite}
+@keyframes skelPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.temp.is-skel{background:none}
+.chart-skel{aspect-ratio:760/300}
+
+.big-icon.solo .bi-sun,
+.big-icon.solo .bi-cloud{left:0;bottom:0;width:100%}
+
+footer a{color:var(--muted)}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+.sky-layer{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease;animation:skyShift 26s ease-in-out infinite alternate}
+.sky-layer.is-active{opacity:1}
+.sky-layer.sky-cloudy{background:radial-gradient(1100px 700px at 85% -10%,rgba(120,130,150,.18),transparent 65%),radial-gradient(900px 600px at -10% 110%,rgba(90,98,115,.14),transparent 65%),linear-gradient(180deg,#090b11 0%,#0f121a 55%,#181c28 100%)}
+.sky-layer.sky-rain{background:radial-gradient(1100px 700px at 85% -10%,rgba(40,80,120,.25),transparent 65%),radial-gradient(900px 600px at -10% 110%,rgba(30,60,100,.2),transparent 65%),linear-gradient(180deg,#04070f 0%,#071019 55%,#0a1826 100%)}
+
+#stars,.moon{transition:opacity 1.2s ease}
+.sky[data-sky="cloudy"] #stars{opacity:.25}
+.sky[data-sky="cloudy"] .moon{opacity:.35}
+.sky[data-sky="cloudy"] .bg-cloud{background:rgba(170,178,195,.1)}
+.sky[data-sky="cloudy"] .shoot,
+.sky[data-sky="rain"] .shoot{display:none}
+.sky[data-sky="rain"] #stars,
+.sky[data-sky="rain"] .moon{opacity:0}

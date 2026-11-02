@@ -1,0 +1,31 @@
+# Comandos do Projeto
+
+Procedimento padrão referenciado pelas skills que precisam **rodar testes, checagens estáticas ou o serviço local** (`do-execute-task`, `do-execute-review`, `do-execute-review-fix`, `do-execute-qa`, `do-execute-qa-fix`) e pelo `do-setup`, que grava os comandos. O framework não presume linguagem, gerenciador de pacotes, framework de testes ou ferramenta de build: os comandos vêm sempre do próprio projeto.
+
+## Onde ficam registrados
+
+O `do-setup` grava a seção `## Project Commands` em `.do/context.md`, o arquivo de contexto local do framework (ver `do-project-context.md`):
+
+| Finalidade | Comando | Observação |
+|------------|---------|------------|
+| Instalar dependências | [comando] | [pré-requisitos] |
+| Rodar todos os testes | [comando] | [escopo: unitário, integração…] |
+| Rodar um teste isolado | [comando com placeholder] | [como filtrar por arquivo ou nome] |
+| Rodar testes com cobertura | [comando] | [só se o projeto declarar] |
+| Checagem estática | [comando(s)] | [tipos, lint, formatação — o que o projeto definir] |
+| Iniciar o serviço local | [comando] | [porta ou endpoint de saúde] |
+
+Linhas sem equivalente no projeto ficam como `—`.
+
+## Procedimento para obter um comando
+
+1. Leia a seção `Project Commands` de `.do/context.md`. Se a linha existir, use exatamente aquele comando.
+2. Se a seção ou a linha não existir, **descubra no próprio projeto**, nesta ordem: os comandos declarados nos arquivos de manifesto, de build ou de tarefas na raiz; a configuração de integração contínua; o README e a documentação de contribuição. Use o comando que o projeto declara para a finalidade; não escolha um por convenção de linguagem.
+3. Se houver mais de um candidato legítimo, escolha o que o próprio projeto documenta como principal. Nunca rode dois comandos alternativos para a mesma finalidade.
+4. Se, mesmo assim, não houver comando para a finalidade:
+   - **Testes:** registre "nenhuma infraestrutura de testes detectada" e siga a regra da skill (as skills que exigem testes passando não podem concluir o trabalho sem um comando de testes).
+   - **Checagem estática:** pule e registre que o projeto não define uma.
+   - **Iniciar o serviço local:** trate o serviço como `external` em `do-service-readiness.md` (documente a lacuna, não tente adivinhar).
+5. **Dependências ausentes:** se um comando (testes, checagem estática, iniciar o serviço) falhar porque as dependências do projeto não estão instaladas (módulos, pacotes ou bibliotecas não encontrados, ambiente de dependências inexistente), rode **uma única vez** o comando da linha `Instalar dependências` (ou o que o projeto declara para isso) e repita o comando que falhou. Instalar as dependências que o próprio projeto declara faz parte do trabalho e é permitido; não conte isso como "gambiarra". Se a instalação falhar, trate como falha do ambiente e reporte; não tente contornar.
+6. Variantes do comando declarado que só acrescentam opções (cobertura, filtro por arquivo ou nome, formato de saída) são permitidas; trocar de ferramenta, não.
+7. Nunca instale ferramentas globalmente, nem dependências que o projeto não declara (nem a TechSpec ou a task pedem), e nunca altere a configuração do projeto para contornar uma falha: desligar regras, rebaixar erros para avisos, excluir arquivos da checagem ou pular testes é proibido. **Exceção:** quando a configuração de uma ferramenta não reconhece algo que o código da task usa legitimamente (por exemplo, o linter sem os globals do framework de testes do projeto), ajustá-la para reconhecer, com o menor escopo possível (só os arquivos que usam aquilo), faz parte da task (trava de checagens estáticas do `do-execute-task`).

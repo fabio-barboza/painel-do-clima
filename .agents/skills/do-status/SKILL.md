@@ -1,0 +1,67 @@
+---
+name: do-status
+description: Shows current progress of a PRD — completed tasks, next pending task, completion percentage, and missing artifacts. Use when the user asks for status, progress, what's next, or wants to resume work on a feature. Read-only skill — does not modify any files. Do not use for task implementation, review, or QA.
+---
+
+# Status Report
+
+## Directory Convention
+**MANDATORY:** PRD directories ALWAYS follow the pattern `./prds/prd-[feature-slug]/` where `prd-` is a required prefix. Example: feature `user-auth` → directory `./prds/prd-user-auth/`. When scanning `./prds/`, only consider folders matching the `prd-*` pattern.
+
+## Procedures
+
+**Step 1: Identify Target PRD**
+1. If the user did not provide `[feature-slug]`, scan `./prds/` for folders matching `prd-*`.
+2. If only one `prd-*` folder exists, use it automatically. If multiple exist, select the most recently modified.
+3. If `./prds/` does not exist or contains no `prd-*` folders, halt: "No PRDs found — run `do-create-prd` first."
+
+**Step 2: Read Tasks**
+1. Read `./prds/prd-[feature-slug]/tasks/tasks.md`. If it does not exist, halt: "tasks.md not found — run `do-create-tasks` first."
+2. Parse all tasks: `[x]` = completed, `[ ]` = pending.
+3. Identify the next pending task (first `[ ]` in order).
+4. Check if the next pending task has unmet dependencies (any prior task still `[ ]`).
+
+**Step 3: Check Artifact Integrity (Optional)**
+1. For each task marked `[x]`, verify its review file exists at `./prds/prd-[feature-slug]/tasks/[num]_task_review.md`.
+2. Flag any `[x]` task missing its review file as incomplete.
+3. If the next pending task is currently in progress, read `./prds/prd-[feature-slug]/tasks/[num]_task.md` to show subtask-level progress.
+
+**Step 3B: Review and QA Rounds (Optional)**
+Follow `do-shared/references/do-run-folders.md` (read only; never create or modify anything).
+1. In `./prds/prd-[feature-slug]/`, find the most recent `review-<N>/` and `qa-<N>/` folders (and, if present, the legacy `review-report.md` / `qa-report.md` at the PRD root).
+2. For each, read the `Status` line of its report and count the open items: `pendente` files in `fixes/` (review) and `aberto`/`novo` files in `bugs/` (QA).
+3. If neither exists, show "nenhum review/QA executado".
+
+**Step 4: Output Status Report**
+
+Produce a concise report in this format:
+
+```
+📦 [Feature Name] (prd-[slug])
+
+Progresso: X/Y tasks concluídas (Z%)
+
+✅ Concluídas: 1, 2, 3
+⏳ Próxima:    4 — [título da task]
+⏸️  Pendentes: 5, 6, 7 ... Y
+
+🔍 Review: review-[N] — [status] — [X fixes pendentes]
+🧪 QA:     qa-[N] — [status] — [Y bugs abertos]
+
+⚠️  Artefatos ausentes: [lista de tasks [x] sem review file, se houver]
+🚫 Bloqueios: [tasks com dependências não atendidas, se houver]
+```
+
+## Output Language
+Report in Brazilian Portuguese (PT-BR).
+
+## Error Handling
+- If `./prds/` does not exist or contains no `prd-*` folder, halt with: "No PRDs found — run `do-create-prd` first."
+- If `tasks.md` does not exist for the selected PRD, halt with: "tasks.md not found — run `do-create-tasks` first."
+- If multiple `prd-*` folders exist and none was specified, select the most recently modified — never block on user input.
+- If a task is marked `[x]` but its review file is missing, list the inconsistency under "Artefatos ausentes" — do not modify any file.
+
+## References
+- Tasks index: `./prds/prd-[feature-slug]/tasks/tasks.md`
+- Task files: `./prds/prd-[feature-slug]/tasks/[num]_task.md`
+- Review/QA rounds: `./prds/prd-[feature-slug]/review/review-[N]/`, `./prds/prd-[feature-slug]/qa/qa-[N]/` (see `do-shared/references/do-run-folders.md`)

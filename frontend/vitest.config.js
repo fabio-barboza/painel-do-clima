@@ -14,6 +14,7 @@ export default defineConfig({
       reportsDirectory: './coverage',
       exclude: [
         'coverage/**',
+        'dist/**',
         'node_modules/**',
         '**/__tests__/**',
         '**/*.config.js',
